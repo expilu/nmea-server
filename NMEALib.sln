@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMEALib", "NMEALib\NMEALib.csproj", "{1339B352-7F61-4011-9F3C-521FBFC2328A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{B66F9AF7-7971-4C34-8CEF-588C602A4D8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1339B352-7F61-4011-9F3C-521FBFC2328A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1339B352-7F61-4011-9F3C-521FBFC2328A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1339B352-7F61-4011-9F3C-521FBFC2328A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B66F9AF7-7971-4C34-8CEF-588C602A4D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B66F9AF7-7971-4C34-8CEF-588C602A4D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B66F9AF7-7971-4C34-8CEF-588C602A4D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B66F9AF7-7971-4C34-8CEF-588C602A4D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
