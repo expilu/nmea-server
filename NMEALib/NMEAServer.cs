@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NMEALib
 {
@@ -12,11 +13,13 @@ namespace NMEALib
         private int rateMs;
         private TcpListener server;
         private List<TcpClient> clients = new List<TcpClient>();
+        private InstrumentsData instrumentsData;
 
         private bool _started;
 
-        public NMEAServer(int port, int rateMs)
+        public NMEAServer(ref InstrumentsData instrumentsData, int port, int rateMs)
         {
+            this.instrumentsData = instrumentsData;
             this.port = port;
             this.rateMs = rateMs;
 
@@ -64,18 +67,35 @@ namespace NMEALib
 
         private void SendDataLoop()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                for (int i = 0; i < clients.Count; i++)
+                while (_started)
                 {
-                    TcpClient client = clients[i];
-
-                    if (!client.Connected)
+                    for (int i = 0; i < clients.Count; i++)
                     {
-                        clients.Remove(client);
-                        i--;
-                        Debug.WriteLine("Client disconnected!");
+                        TcpClient client = clients[i];
+
+                        if (!client.Connected)
+                        {
+                            clients.Remove(client);
+                            i--;
+                            Debug.WriteLine("Client disconnected!");
+                        }
+                        else
+                        {
+                            try
+                            {
+                                NetworkStream stream = client.GetStream();
+                                Byte[] data = Encoding.ASCII.GetBytes(instrumentsData.generateNMEA());
+                                stream.Write(data, 0, data.Length);
+                            } catch (System.IO.IOException e)
+                            {
+                                // ignore
+                            }
+                        }
                     }
+
+                    await Task.Delay(rateMs);
                 }
             });
         }
