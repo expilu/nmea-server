@@ -80,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NMEALib\NMEALib.csproj">
-      <Project>{1339B352-7F61-4011-9F3C-521FBFC2328A}</Project>
-      <Name>NMEALib</Name>
+    <ProjectReference Include="..\NMEAServerLib\NMEAServerLib.csproj">
+      <Project>{1aa4ca5f-aa38-4291-8688-f62f53d4d12b}</Project>
+      <Name>NMEAServerLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
