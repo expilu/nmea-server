@@ -12,7 +12,7 @@ namespace NMEALib
             string nmea = "";
 
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0);      
-            if(data.Heading != null && data.Speed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.Speed ?? 0, data.Heading ?? 0);
+            if(data.TrueHeading != null && data.Speed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.Speed ?? 0, data.TrueHeading ?? 0, data.MagneticHeading);
 
             return nmea;                
         }
@@ -25,9 +25,10 @@ namespace NMEALib
             return FormatSentence(sentence);
         }
 
-        public static string generateSpeedAndHeadingSentence_VHW(double speed, double heading)
+        public static string generateSpeedAndHeadingSentence_VHW(double speed, double trueHeading, Nullable<double> magneticHeading)
         {
-            string _heading = heading.ToString().Replace(",", ".");
+            string _heading = trueHeading.ToString().Replace(",", ".");
+            if (magneticHeading == null) magneticHeading = trueHeading;
             string _speedKnots = speed.ToString().Replace(",", ".");
             string _speedKmH = (speed * 1.852).ToString().Replace(",", ".");
             string sentence = "IIVHW," + _heading + ",T," + _heading + ",M," + _speedKnots + ",N," + _speedKmH + ",K";
