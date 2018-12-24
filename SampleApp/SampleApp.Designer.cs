@@ -37,10 +37,16 @@
             this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.numericUpDownRate = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numericUpDownHeading = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericUpDownSpeed = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonStartServer
@@ -135,9 +141,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(212, 26);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(134, 13);
+            this.label4.Size = new System.Drawing.Size(107, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "NMEA send rate (seconds)";
+            this.label4.Text = "NMEA send rate (ms)";
             // 
             // numericUpDownRate
             // 
@@ -161,11 +167,61 @@
             0,
             0});
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(224, 107);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Heading";
+            // 
+            // numericUpDownHeading
+            // 
+            this.numericUpDownHeading.DecimalPlaces = 1;
+            this.numericUpDownHeading.Location = new System.Drawing.Point(277, 105);
+            this.numericUpDownHeading.Maximum = new decimal(new int[] {
+            359,
+            0,
+            0,
+            0});
+            this.numericUpDownHeading.Name = "numericUpDownHeading";
+            this.numericUpDownHeading.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownHeading.TabIndex = 9;
+            this.numericUpDownHeading.ValueChanged += new System.EventHandler(this.numericUpDownHeading_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(198, 135);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(73, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Speed (knots)";
+            // 
+            // numericUpDownSpeed
+            // 
+            this.numericUpDownSpeed.DecimalPlaces = 1;
+            this.numericUpDownSpeed.Location = new System.Drawing.Point(277, 131);
+            this.numericUpDownSpeed.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDownSpeed.Name = "numericUpDownSpeed";
+            this.numericUpDownSpeed.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownSpeed.TabIndex = 11;
+            this.numericUpDownSpeed.ValueChanged += new System.EventHandler(this.numericUpDownSpeed_ValueChanged);
+            // 
             // SampleApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.numericUpDownSpeed);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.numericUpDownHeading);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.numericUpDownRate);
             this.Controls.Add(this.label3);
@@ -182,6 +238,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -198,6 +256,10 @@
         private System.Windows.Forms.NumericUpDown numericUpDownPort;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numericUpDownRate;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown numericUpDownHeading;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numericUpDownSpeed;
     }
 }
 

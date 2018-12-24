@@ -21,6 +21,7 @@ namespace SampleApp
             InitializeComponent();
 
             numericUpDownPort.Value = 10110M;
+            numericUpDownRate.Value = 1000M;
             numericUpDownLat.Value = 28.134420M;
             numericUpDownLat.Increment = 0.01M;
             numericUpDownLon.Value = -15.435076M;
@@ -57,6 +58,16 @@ namespace SampleApp
         private void numericUpDownLon_ValueChanged(object sender, EventArgs e)
         {
             boatData.Lon = decimal.ToDouble(numericUpDownLon.Value);
+        }
+
+        private void numericUpDownHeading_ValueChanged(object sender, EventArgs e)
+        {
+            boatData.Heading = decimal.ToDouble(numericUpDownHeading.Value);
+        }
+
+        private void numericUpDownSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            boatData.Speed = decimal.ToDouble(numericUpDownSpeed.Value);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace NMEALib
         {
             string nmea = "";
 
-            if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0);
+            if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0);      
+            if(data.Heading != null && data.Speed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.Speed ?? 0, data.Heading ?? 0);
 
             return nmea;                
         }
@@ -21,6 +22,15 @@ namespace NMEALib
             string _lat = ConvertDecimalDegreesToNMEAFormat(lat, Coord.Lat);
             string _lon = ConvertDecimalDegreesToNMEAFormat(lon, Coord.Lon);
             string sentence = "GPGLL," + _lat + "," + _lon + "," + UTCTime() + ",A";
+            return FormatSentence(sentence);
+        }
+
+        public static string generateSpeedAndHeadingSentence_VHW(double speed, double heading)
+        {
+            string _heading = heading.ToString().Replace(",", ".");
+            string _speedKnots = speed.ToString().Replace(",", ".");
+            string _speedKmH = (speed * 1.852).ToString().Replace(",", ".");
+            string sentence = "IIVHW," + _heading + ",T," + _heading + ",M," + _speedKnots + ",N," + _speedKmH + ",K";
             return FormatSentence(sentence);
         }
 

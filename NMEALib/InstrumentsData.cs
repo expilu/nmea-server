@@ -9,6 +9,8 @@ namespace NMEALib
 
         public Nullable<double> Lat { get; set; }
         public Nullable<double> Lon { get; set; }
+        public Nullable<double> Heading { get; set; }
+        public Nullable<double> Speed { get; set; }
 
         public String generateNMEA()
         {            
