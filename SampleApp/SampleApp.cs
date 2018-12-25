@@ -21,6 +21,14 @@ namespace SampleApp
             numericUpDownLon.Value = -15.435076M;
             numericUpDownLon.Increment = 0.01M;
 
+            // TODO remove this
+            boatData.TrueWindSpeed = 10.78;
+            boatData.TrueWindDirection = 179;
+            boatData.Depth = 1000.4;
+            boatData.TransducerDepth = 1;
+            boatData.CourseOverGround = 150;
+            boatData.SpeedOverGround = 76.34;
+
             Move();
         }
 
@@ -58,12 +66,12 @@ namespace SampleApp
 
         private void numericUpDownHeading_ValueChanged(object sender, EventArgs e)
         {
-            boatData.TrueHeading = decimal.ToDouble(numericUpDownHeading.Value);
+            boatData.TrueHeading = Convert.ToInt32(numericUpDownHeading.Value);
         }
 
         private void numericUpDownSpeed_ValueChanged(object sender, EventArgs e)
         {
-            boatData.Speed = decimal.ToDouble(numericUpDownSpeed.Value);
+            boatData.WaterSpeed = decimal.ToDouble(numericUpDownSpeed.Value);
         }
 
         private void Move()
