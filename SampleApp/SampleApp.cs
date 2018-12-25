@@ -22,14 +22,16 @@ namespace SampleApp
             numericUpDownLon.Increment = 0.01M;
 
             // TODO remove this
-            boatData.TrueWindSpeed = 10.78;
-            boatData.TrueWindDirection = 179;
+            boatData.TrueWindSpeed = 5;
+            boatData.TrueWindAngle = 270;
+            boatData.ApparentWindSpeed = 7;
+            boatData.ApparentWindAngle = 280;
             boatData.Depth = 1000.4;
             boatData.TransducerDepth = 1;
-            boatData.CourseOverGround = 150;
-            boatData.SpeedOverGround = 76.34;
+            boatData.CourseOverGround = 0;
+            boatData.SpeedOverGround = 5;
 
-            Move();
+            //Move();
         }
 
         private void buttonStartServer_Click(object sender, EventArgs e)

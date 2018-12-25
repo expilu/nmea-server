@@ -15,13 +15,12 @@ namespace NMEAServerLib
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0);
             if (data.TrueHeading != null && data.WaterSpeed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.WaterSpeed ?? 0, data.TrueHeading ?? 0, data.MagneticHeading);
             if (data.TrueHeading != null) nmea += generateTrueHeadingSentence_HDT(data.TrueHeading ?? 0);
-            if (data.TrueWindDirection != null && data.TrueWindSpeed != null) nmea += generateTrueWindSpeedAndAngleSentence_MWV(data.TrueWindDirection ?? 0, data.TrueWindSpeed ?? 0);
-            if (data.ApparentWindDirection != null && data.ApparentWindSpeed != null) nmea += generateApparentWindSpeedAndAngleSentence_MWV(data.ApparentWindDirection ?? 0, data.ApparentWindSpeed ?? 0);
+            if (data.TrueWindAngle != null && data.TrueWindSpeed != null) nmea += generateTrueWindSpeedAndAngleSentence_MWV(data.TrueWindAngle ?? 0, data.TrueWindSpeed ?? 0);
+            if (data.ApparentWindAngle != null && data.ApparentWindSpeed != null) nmea += generateApparentWindSpeedAndAngleSentence_MWV(data.ApparentWindAngle ?? 0, data.ApparentWindSpeed ?? 0);
             if (data.Depth != null && data.TransducerDepth != null) nmea += generateDepthSentence_DPT(data.Depth ?? 0, data.TransducerDepth ?? 0);
             if (data.Depth != null) nmea += generateDepthSentence_DBT(data.Depth ?? 0);
             if (data.CourseOverGround != null && data.SpeedOverGround != null) nmea += generateSpeedAndCourseOverGroundSentence_VTG(data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0, data.MagneticCourseOverGround);
-            if (data.Lat != null && data.Lon != null && data.SpeedOverGround != null && data.CourseOverGround != null) nmea += generateRecommendedMinimumInformationSentence_RMC(data.Lat ?? 0, data.Lon ?? 0, data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0);
-
+            if (data.Lat != null && data.Lon != null && data.SpeedOverGround != null && data.CourseOverGround != null) nmea += generateRecommendedMinimumInformationSentence_RMC(data.Lat ?? 0, data.Lon ?? 0, data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0);            
             return nmea;
         }
 
@@ -48,15 +47,15 @@ namespace NMEAServerLib
             return FormatSentence(sentence);
         }
 
-        public static string generateTrueWindSpeedAndAngleSentence_MWV(int trueWindDirection, double trueWindSpeed)
+        public static string generateTrueWindSpeedAndAngleSentence_MWV(int trueWindAngle, double trueWindSpeed)
         {
-            string sentence = "WIMWV," + trueWindDirection.ToString() + ",T," + trueWindSpeed.ToString("F1", CultureInfo.InvariantCulture) + ",N,A";
+            string sentence = "WIMWV," + trueWindAngle.ToString() + ",T," + trueWindSpeed.ToString("F1", CultureInfo.InvariantCulture) + ",N,A";
             return FormatSentence(sentence);            
         }
 
-        public static string generateApparentWindSpeedAndAngleSentence_MWV(int apparentWindDirection, double apparentWindSpeed)
+        public static string generateApparentWindSpeedAndAngleSentence_MWV(int apparentWindAngle, double apparentWindSpeed)
         {
-            string sentence = "WIMWV," + apparentWindDirection.ToString() + ",R," + apparentWindSpeed.ToString("F1", CultureInfo.InvariantCulture) + ",N,A";
+            string sentence = "WIMWV," + apparentWindAngle.ToString() + ",R," + apparentWindSpeed.ToString("F1", CultureInfo.InvariantCulture) + ",N,A";
             return FormatSentence(sentence);
         }
 
