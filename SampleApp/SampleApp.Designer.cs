@@ -41,12 +41,18 @@
             this.numericUpDownHeading = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDownSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numericUpDownTWS = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDownTWA = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTWS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTWA)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonStartServer
@@ -170,7 +176,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(224, 107);
+            this.label5.Location = new System.Drawing.Point(203, 105);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 10;
@@ -179,7 +185,7 @@
             // numericUpDownHeading
             // 
             this.numericUpDownHeading.DecimalPlaces = 1;
-            this.numericUpDownHeading.Location = new System.Drawing.Point(277, 105);
+            this.numericUpDownHeading.Location = new System.Drawing.Point(256, 103);
             this.numericUpDownHeading.Maximum = new decimal(new int[] {
             359,
             0,
@@ -193,7 +199,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(198, 135);
+            this.label6.Location = new System.Drawing.Point(177, 135);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 13);
             this.label6.TabIndex = 12;
@@ -202,7 +208,7 @@
             // numericUpDownSpeed
             // 
             this.numericUpDownSpeed.DecimalPlaces = 1;
-            this.numericUpDownSpeed.Location = new System.Drawing.Point(277, 131);
+            this.numericUpDownSpeed.Location = new System.Drawing.Point(256, 131);
             this.numericUpDownSpeed.Maximum = new decimal(new int[] {
             50,
             0,
@@ -213,11 +219,61 @@
             this.numericUpDownSpeed.TabIndex = 11;
             this.numericUpDownSpeed.ValueChanged += new System.EventHandler(this.numericUpDownSpeed_ValueChanged);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(382, 133);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(124, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "True Wind speed (knots)";
+            // 
+            // numericUpDownTWS
+            // 
+            this.numericUpDownTWS.DecimalPlaces = 1;
+            this.numericUpDownTWS.Location = new System.Drawing.Point(512, 129);
+            this.numericUpDownTWS.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDownTWS.Name = "numericUpDownTWS";
+            this.numericUpDownTWS.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownTWS.TabIndex = 13;
+            this.numericUpDownTWS.ValueChanged += new System.EventHandler(this.numericUpDownTWS_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(389, 107);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(117, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "True Wind angle (360º)";
+            // 
+            // numericUpDownTWA
+            // 
+            this.numericUpDownTWA.DecimalPlaces = 1;
+            this.numericUpDownTWA.Location = new System.Drawing.Point(512, 103);
+            this.numericUpDownTWA.Maximum = new decimal(new int[] {
+            359,
+            0,
+            0,
+            0});
+            this.numericUpDownTWA.Name = "numericUpDownTWA";
+            this.numericUpDownTWA.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownTWA.TabIndex = 15;
+            this.numericUpDownTWA.ValueChanged += new System.EventHandler(this.numericUpDownTWA_ValueChanged);
+            // 
             // SampleApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.numericUpDownTWA);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.numericUpDownTWS);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.numericUpDownSpeed);
             this.Controls.Add(this.label5);
@@ -240,6 +296,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTWS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTWA)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,6 +318,10 @@
         private System.Windows.Forms.NumericUpDown numericUpDownHeading;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numericUpDownSpeed;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown numericUpDownTWS;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown numericUpDownTWA;
     }
 }
 

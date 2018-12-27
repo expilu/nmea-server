@@ -6,8 +6,8 @@ namespace NMEAServerLib
     {
         public Nullable<double> Lat { get; set; }
         public Nullable<double> Lon { get; set; }
-        public Nullable<int> TrueHeading { get; set; }
-        public Nullable<int> MagneticHeading { get; set; } // true heading will be used if no magnetic is set
+        public Nullable<int> Heading { get; set; }
+        public Nullable<int> MagneticHeading { get; set; } // Heading will be used if no magnetic is set
         public Nullable<double> WaterSpeed { get; set; } // knots
         public Nullable<int> TrueWindAngle { get; set; } // 360 degrees relative to heading
         public Nullable<double> TrueWindSpeed { get; set; } // knots

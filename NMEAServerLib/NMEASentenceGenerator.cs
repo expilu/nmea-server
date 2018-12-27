@@ -13,8 +13,8 @@ namespace NMEAServerLib
             string nmea = "";
 
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0);
-            if (data.TrueHeading != null && data.WaterSpeed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.WaterSpeed ?? 0, data.TrueHeading ?? 0, data.MagneticHeading);
-            if (data.TrueHeading != null) nmea += generateTrueHeadingSentence_HDT(data.TrueHeading ?? 0);
+            if (data.Heading != null && data.WaterSpeed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.WaterSpeed ?? 0, data.Heading ?? 0, data.MagneticHeading);
+            if (data.Heading != null) nmea += generateTrueHeadingSentence_HDT(data.Heading ?? 0);
             if (data.TrueWindAngle != null && data.TrueWindSpeed != null) nmea += generateTrueWindSpeedAndAngleSentence_MWV(data.TrueWindAngle ?? 0, data.TrueWindSpeed ?? 0);
             if (data.ApparentWindAngle != null && data.ApparentWindSpeed != null) nmea += generateApparentWindSpeedAndAngleSentence_MWV(data.ApparentWindAngle ?? 0, data.ApparentWindSpeed ?? 0);
             if (data.Depth != null && data.TransducerDepth != null) nmea += generateDepthSentence_DPT(data.Depth ?? 0, data.TransducerDepth ?? 0);

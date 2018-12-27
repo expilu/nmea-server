@@ -16,22 +16,28 @@ namespace SampleApp
 
             numericUpDownPort.Value = 10110M;
             numericUpDownRate.Value = 1000M;
-            numericUpDownLat.Value = 28.134420M;
+            boatData.Lat = 28.134420;
+            numericUpDownLat.Value = (decimal) boatData.Lat;
             numericUpDownLat.Increment = 0.01M;
-            numericUpDownLon.Value = -15.435076M;
+            boatData.Lon = -15.435076;
+            numericUpDownLon.Value = (decimal) boatData.Lon;
             numericUpDownLon.Increment = 0.01M;
+            boatData.Heading = 0;
+            boatData.CourseOverGround = 0; // use the same, is just an example after all
+            numericUpDownHeading.Value = (decimal) boatData.Heading;
+            boatData.WaterSpeed = 5;
+            boatData.SpeedOverGround = boatData.WaterSpeed; // use the same, is just an example after all
+            numericUpDownSpeed.Value = (decimal) boatData.WaterSpeed;
+            boatData.TrueWindAngle = 90;
+            numericUpDownTWA.Value = (decimal) boatData.TrueWindAngle;
+            boatData.TrueWindSpeed = 15;
+            numericUpDownTWS.Value = (decimal)boatData.TrueWindSpeed;
 
             // TODO remove this
-            boatData.TrueWindSpeed = 5;
-            boatData.TrueWindAngle = 270;
-            boatData.ApparentWindSpeed = 7;
-            boatData.ApparentWindAngle = 280;
             boatData.Depth = 1000.4;
             boatData.TransducerDepth = 1;
-            boatData.CourseOverGround = 0;
-            boatData.SpeedOverGround = 5;
 
-            //Move();
+            CalcMovement();
         }
 
         private void buttonStartServer_Click(object sender, EventArgs e)
@@ -68,15 +74,17 @@ namespace SampleApp
 
         private void numericUpDownHeading_ValueChanged(object sender, EventArgs e)
         {
-            boatData.TrueHeading = Convert.ToInt32(numericUpDownHeading.Value);
+            boatData.Heading = Convert.ToInt32(numericUpDownHeading.Value);
+            boatData.CourseOverGround = boatData.Heading; // use the same, is just an example after all
         }
 
         private void numericUpDownSpeed_ValueChanged(object sender, EventArgs e)
         {
             boatData.WaterSpeed = decimal.ToDouble(numericUpDownSpeed.Value);
+            boatData.SpeedOverGround = boatData.WaterSpeed; // use the same, is just an example after all
         }
 
-        private void Move()
+        private void CalcMovement()
         {
             Task.Run(async () =>
             {
@@ -110,8 +118,13 @@ namespace SampleApp
                         double newLat = toDegrees(φ2);
                         double newLon = (toDegrees(λ2) + 540) % 360 - 180;
 
-                        numericUpDownLat.Invoke(new Action(() => numericUpDownLat.Value = Convert.ToDecimal(newLat)));
-                        numericUpDownLon.Invoke(new Action(() => numericUpDownLon.Value = Convert.ToDecimal(newLon)));
+                        //numericUpDownLat.Invoke(new Action(() => numericUpDownLat.Value = Convert.ToDecimal(newLat)));
+                        //numericUpDownLon.Invoke(new Action(() => numericUpDownLon.Value = Convert.ToDecimal(newLon)));
+                        this.numericUpDownLat.Value = Convert.ToDecimal(newLat);
+                        this.numericUpDownLon.Value = Convert.ToDecimal(newLon);
+
+                        boatData.ApparentWindSpeed = Math.Sqrt(Math.Pow(boatData.TrueWindSpeed ?? 0, 2) + Math.Pow(boatData.SpeedOverGround ?? 0, 2) + (2 * boatData.TrueWindSpeed ?? 0 * boatData.SpeedOverGround ?? 0 * Math.Cos(boatData.CourseOverGround ?? 0)));
+                        boatData.ApparentWindAngle = Convert.ToInt32(Math.Acos((boatData.TrueWindSpeed ?? 0 * Math.Cos(boatData.CourseOverGround ?? 0) + boatData.SpeedOverGround ?? 0) / boatData.ApparentWindSpeed ?? 0));
                     }
 
                     await Task.Delay(Convert.ToInt32(numericUpDownRate.Value));
@@ -127,6 +140,16 @@ namespace SampleApp
         private double toDegrees(double radians)
         {
             return radians * 180 / Math.PI;
+        }
+
+        private void numericUpDownTWA_ValueChanged(object sender, EventArgs e)
+        {
+            boatData.TrueWindAngle = Convert.ToInt32(numericUpDownTWA.Value);
+        }
+
+        private void numericUpDownTWS_ValueChanged(object sender, EventArgs e)
+        {
+            boatData.TrueWindSpeed = decimal.ToDouble(numericUpDownTWS.Value);
         }
     }
 }
