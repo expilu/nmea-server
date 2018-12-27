@@ -13,6 +13,7 @@ namespace NMEAServerLib
         private TcpListener server;
         private List<TcpClient> clients = new List<TcpClient>();
         private InstrumentsData instrumentsData;
+        private CancellationTokenSource cancellationToken;
 
         private bool _started;
 
@@ -36,6 +37,7 @@ namespace NMEAServerLib
 
         public void Start()
         {
+            cancellationToken = new CancellationTokenSource();
             server.Start();
             _started = true;
             new Thread(ConnectionsLoop).Start();
@@ -44,16 +46,31 @@ namespace NMEAServerLib
 
         public void Stop()
         {
+            cancellationToken.Cancel();
             server.Stop();
             _started = false;
         }
 
         private void ConnectionsLoop()
         {
-            while (_started)
+            while (_started && !cancellationToken.IsCancellationRequested)
             {
-                TcpClient client = server.AcceptTcpClient();
-                clients.Add(client);
+                try
+                {
+                    TcpClient client = server.AcceptTcpClient();
+                    clients.Add(client);
+                }
+                catch (SocketException e)
+                {
+                    if (e.SocketErrorCode == SocketError.Interrupted)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
             }
         }
 
