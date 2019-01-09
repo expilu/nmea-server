@@ -42,6 +42,7 @@ namespace NMEAServerLib
             _started = true;
             new Thread(ConnectionsLoop).Start();
             new Thread(SendDataLoop).Start();
+            OnServerStarted();
         }
 
         public void Stop()
@@ -49,6 +50,7 @@ namespace NMEAServerLib
             cancellationToken.Cancel();
             server.Stop();
             _started = false;
+            OnServerStop();
         }
 
         private void ConnectionsLoop()
@@ -92,6 +94,8 @@ namespace NMEAServerLib
                         try
                         {
                             NetworkStream stream = client.GetStream();
+                            string nmea = instrumentsData.generateNMEA();
+                            OnNMEASent(nmea);
                             Byte[] data = Encoding.ASCII.GetBytes(instrumentsData.generateNMEA());
                             stream.Write(data, 0, data.Length);
                         }
@@ -105,5 +109,14 @@ namespace NMEAServerLib
                 Thread.Sleep(rateMs);
             }
         }
+
+        public delegate void ServerStarted();
+        public event ServerStarted OnServerStarted;
+
+        public delegate void ServerStop();
+        public event ServerStop OnServerStop;
+
+        public delegate void NMEASent(string nmea);
+        public event NMEASent OnNMEASent;
     }
 }
