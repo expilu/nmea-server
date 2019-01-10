@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace NMEAServerLib
     public class NMEAServer
     {
         private int port;
-        private int rateMs;
+        private Nullable<int> rateMs;
         private TcpListener server;
         private List<TcpClient> clients = new List<TcpClient>();
         private InstrumentsData instrumentsData;
@@ -17,14 +18,21 @@ namespace NMEAServerLib
 
         private bool _started;
 
-        public NMEAServer(ref InstrumentsData instrumentsData, int port, int rateMs)
+        public NMEAServer(ref InstrumentsData instrumentsData, int port, Nullable<int> sendRateMs = null)
         {
-            this.instrumentsData = instrumentsData;
-            this.port = port;
-            this.rateMs = rateMs;
+            try
+            {
 
-            #pragma warning disable 612, 618
-            server = new TcpListener(port);
+                this.instrumentsData = instrumentsData;
+                this.port = port;
+                this.rateMs = sendRateMs;
+
+                #pragma warning disable 612, 618
+                server = new TcpListener(port);
+            } catch (Exception e)
+            {
+                OnServerError(e);
+            }
         }
 
         public bool Started
@@ -37,76 +45,124 @@ namespace NMEAServerLib
 
         public void Start()
         {
-            cancellationToken = new CancellationTokenSource();
-            server.Start();
-            _started = true;
-            new Thread(ConnectionsLoop).Start();
-            new Thread(SendDataLoop).Start();
-            OnServerStarted();
+            try
+            {
+                cancellationToken = new CancellationTokenSource();
+                server.Start();
+                _started = true;
+                new Thread(ConnectionsLoop).Start();
+                if(rateMs != null) new Thread(SendDataLoop).Start();
+                if(OnServerStarted != null) OnServerStarted();
+            }
+            catch (Exception e)
+            {
+                OnServerError(e);
+            }
         }
 
         public void Stop()
         {
-            cancellationToken.Cancel();
-            server.Stop();
-            _started = false;
-            OnServerStop();
+            try
+            {
+                cancellationToken.Cancel();
+                server.Stop();
+                _started = false;
+                if (OnServerStop != null) OnServerStop();
+            }
+            catch (Exception e)
+            {
+                OnServerError(e);
+            }
         }
 
         private void ConnectionsLoop()
         {
-            while (_started && !cancellationToken.IsCancellationRequested)
+            try
             {
-                try
+                while (_started && !cancellationToken.IsCancellationRequested)
                 {
-                    TcpClient client = server.AcceptTcpClient();
-                    clients.Add(client);
-                }
-                catch (SocketException e)
-                {
-                    if (e.SocketErrorCode == SocketError.Interrupted)
+                    try
                     {
-                        break;
+                        TcpClient client = server.AcceptTcpClient();
+                        clients.Add(client);
+                        OnClientConnected(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
                     }
-                    else
+                    catch (SocketException e)
                     {
-                        throw e;
+                        if (e.SocketErrorCode == SocketError.Interrupted)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw e;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                OnServerError(e);
             }
         }
 
         private void SendDataLoop()
         {
-            while (_started)
+            try
             {
-                for (int i = 0; i < clients.Count; i++)
+                while (_started)
                 {
-                    TcpClient client = clients[i];
+                    SendData();
 
-                    if (!client.Connected)
+                    Thread.Sleep(rateMs ?? 10 * 60 * 60 * 1000);
+                }
+            }
+            catch (Exception e)
+            {
+                OnServerError(e);
+            }
+        }
+
+        public void SendData()
+        {
+            try
+            {
+                if (_started)
+                {
+                    for (int i = 0; i < clients.Count; i++)
                     {
-                        clients.Remove(client);
-                        i--;
-                    }
-                    else
-                    {
-                        try
+                        TcpClient client = clients[i];
+
+                        if (!client.Connected)
                         {
-                            NetworkStream stream = client.GetStream();
-                            string nmea = instrumentsData.generateNMEA();
-                            OnNMEASent(nmea);
-                            Byte[] data = Encoding.ASCII.GetBytes(instrumentsData.generateNMEA());
-                            stream.Write(data, 0, data.Length);
+                            clients.Remove(client);
+                            i--;
                         }
-                        catch (System.IO.IOException e)
+                        else
                         {
-                            // ignore
+                            try
+                            {
+                                NetworkStream stream = client.GetStream();
+                                string nmea = instrumentsData.generateNMEA();
+                                if (OnNMEASent != null) OnNMEASent(nmea);
+                                Byte[] data = Encoding.ASCII.GetBytes(instrumentsData.generateNMEA());
+                                stream.Write(data, 0, data.Length);
+                            }
+                            catch (System.IO.IOException e)
+                            {
+                                // ignore
+                            }
                         }
                     }
                 }
-
-                Thread.Sleep(rateMs);
+                else
+                {
+                    throw new Exception("Server is not started");
+                }
+            }
+            catch (Exception e)
+            {
+                OnServerError(e);
             }
         }
 
@@ -118,5 +174,11 @@ namespace NMEAServerLib
 
         public delegate void NMEASent(string nmea);
         public event NMEASent OnNMEASent;
+
+        public delegate void ClientConnected(string address);
+        public event ClientConnected OnClientConnected;
+
+        public delegate void ServerError(Exception exception);
+        public event ServerError OnServerError;
     }
 }
