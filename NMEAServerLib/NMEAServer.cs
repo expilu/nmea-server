@@ -29,10 +29,16 @@ namespace NMEAServerLib
 
                 #pragma warning disable 612, 618
                 server = new TcpListener(port);
+                OnServerError += NMEAServer_OnServerError;
             } catch (Exception e)
             {
                 OnServerError(e);
             }
+        }
+
+        private void NMEAServer_OnServerError(Exception exception)
+        {
+            Stop();
         }
 
         public bool Started
@@ -50,8 +56,15 @@ namespace NMEAServerLib
                 cancellationToken = new CancellationTokenSource();
                 server.Start();
                 _started = true;
-                new Thread(ConnectionsLoop).Start();
-                if(rateMs != null) new Thread(SendDataLoop).Start();
+                Thread connsThread = new Thread(ConnectionsLoop);
+                connsThread.IsBackground = true;
+                connsThread.Start();
+                if (rateMs != null)
+                {
+                    Thread dataThread = new Thread(SendDataLoop);
+                    dataThread.IsBackground = true;
+                    dataThread.Start();
+                }
                 if(OnServerStarted != null) OnServerStarted();
             }
             catch (Exception e)
@@ -64,10 +77,16 @@ namespace NMEAServerLib
         {
             try
             {
-                cancellationToken.Cancel();
-                server.Stop();
-                _started = false;
-                if (OnServerStop != null) OnServerStop();
+                if (_started)
+                {
+                    cancellationToken.Cancel();
+                    server.Stop();
+                    _started = false;
+                    if (OnServerStop != null)
+                    {
+                        OnServerStop();
+                    }
+                }
             }
             catch (Exception e)
             {
