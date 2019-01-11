@@ -11,6 +11,7 @@ InstrumentsData instrumentsData = new InstrumentsData();
 NmeaServer nmeaServer = new NMEAServer(ref instrumentsData, 10110);
 nmeaServer.Start();
 ```
+At this point you can connect to the server with any hardware or software (qtVlm, OpenCPN,...) that supports NMEA through TCP.
 Note that `instrumentsData` is passed by ref, you only need to modify its properties when instruments changes occur.
 
 3. Set the properties of your `instrumentsData`. None of them is mandatory. The server will just send the sentences for which it has enough information. Currently the supported sentences are: **[GLL](http://www.catb.org/gpsd/NMEA.html#_gll_geographic_position_latitude_longitude)**, **[VHW](http://www.catb.org/gpsd/NMEA.html#_vhw_water_speed_and_heading)**, **[HDT](http://www.catb.org/gpsd/NMEA.html#_hdt_heading_true)**, **[MWV](http://www.catb.org/gpsd/NMEA.html#_mwv_wind_speed_and_angle)**, **[DPT](http://www.catb.org/gpsd/NMEA.html#_dpt_depth_of_water)**, **[DBT](http://www.catb.org/gpsd/NMEA.html#_dbt_depth_below_transducer)**, **[VTG](http://www.catb.org/gpsd/NMEA.html#_vtg_track_made_good_and_ground_speed)** and **[RMC](http://www.catb.org/gpsd/NMEA.html#_rmc_recommended_minimum_navigation_information)**.
