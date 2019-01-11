@@ -37,7 +37,7 @@ nmeaServer.SendData();
 You can also initialize the server with a send rate. The server will then send the current `instrumentsData` at the specified rate (in milliseconds). You can still also call `SendData()` any moment you like.
 ```C#
 InstrumentsData instrumentsData = new InstrumentsData(); 
-NmeaServer nmeaServer = new NMEAServer(ref instrumentsData, 10110, 10000);
+NmeaServer nmeaServer = new NMEAServer(ref instrumentsData, 10110, 10000); // send data every 10 seconds
 nmeaServer.Start();
 ```
 
