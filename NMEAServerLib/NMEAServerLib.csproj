@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils.cs" />
     <Compile Include="InstrumentsData.cs" />
     <Compile Include="NMEASentenceGenerator.cs" />
     <Compile Include="NMEAServer.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -9,6 +10,21 @@ namespace NMEAServerLib
 {
     public class NMEAServer
     {
+        public delegate void ServerStarted();
+        public event ServerStarted OnServerStarted;
+
+        public delegate void ServerStop();
+        public event ServerStop OnServerStop;
+
+        public delegate void NMEASent(string nmea);
+        public event NMEASent OnNMEASent;
+
+        public delegate void ClientConnected(string address);
+        public event ClientConnected OnClientConnected;
+
+        public delegate void ServerError(Exception exception);
+        public event ServerError OnServerError;
+
         private int port;
         private Nullable<int> rateMs;
         private TcpListener server;
@@ -29,16 +45,40 @@ namespace NMEAServerLib
 
                 #pragma warning disable 612, 618
                 server = new TcpListener(port);
+                OnServerStarted += NMEAServer_OnServerStarted;
+                OnServerStop += NMEAServer_OnServerStop;
                 OnServerError += NMEAServer_OnServerError;
+                OnClientConnected += NMEAServer_OnClientConnected;
+                OnNMEASent += NMEAServer_OnNMEASent;
             } catch (Exception e)
             {
                 OnServerError(e);
             }
         }
 
+        private void NMEAServer_OnServerStarted()
+        {
+            Debug.WriteLine("Server started");
+        }
+
+        private void NMEAServer_OnServerStop()
+        {
+            Debug.WriteLine("Server stopped");
+        }
+
         private void NMEAServer_OnServerError(Exception exception)
         {
             Stop();
+        }
+
+        private void NMEAServer_OnClientConnected(string address)
+        {
+            Debug.WriteLine($"Client connected from {address}");
+        }
+
+        private void NMEAServer_OnNMEASent(string nmea)
+        {
+            Debug.WriteLine($"NMEA sent:\r\n{nmea}");
         }
 
         public bool Started
@@ -184,20 +224,5 @@ namespace NMEAServerLib
                 OnServerError(e);
             }
         }
-
-        public delegate void ServerStarted();
-        public event ServerStarted OnServerStarted;
-
-        public delegate void ServerStop();
-        public event ServerStop OnServerStop;
-
-        public delegate void NMEASent(string nmea);
-        public event NMEASent OnNMEASent;
-
-        public delegate void ClientConnected(string address);
-        public event ClientConnected OnClientConnected;
-
-        public delegate void ServerError(Exception exception);
-        public event ServerError OnServerError;
     }
 }
