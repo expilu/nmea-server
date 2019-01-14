@@ -17,8 +17,8 @@ namespace NMEAServerLib
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GGA(data.Lat ?? 0, data.Lon ?? 0, data.FixQuality ?? FixQualityType.GPS, data.SatellitesCount ?? 4);
             if (data.Heading != null && data.WaterSpeed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.WaterSpeed ?? 0, data.Heading ?? 0, data.MagneticHeading);
             if (data.Heading != null) nmea += generateTrueHeadingSentence_HDT(data.Heading ?? 0);
-            if (data.TrueWindAngle != null && data.TrueWindSpeed != null) nmea += generateTrueWindSpeedAndAngleSentence_MWV(data.TrueWindAngle ?? 0, data.TrueWindSpeed ?? 0);
-            if (data.ApparentWindAngle != null && data.ApparentWindSpeed != null) nmea += generateApparentWindSpeedAndAngleSentence_MWV(data.ApparentWindAngle ?? 0, data.ApparentWindSpeed ?? 0);
+            if (data.TrueWindAngle != null && data.TrueWindSpeed != null) nmea += generateTrueWindSpeedAndAngleSentence_MWV(data.TrueWindAngle ?? 0, data.TrueWindSpeed ?? 0, data.FixQuality ?? FixQualityType.GPS);
+            if (data.ApparentWindAngle != null && data.ApparentWindSpeed != null) nmea += generateApparentWindSpeedAndAngleSentence_MWV(data.ApparentWindAngle ?? 0, data.ApparentWindSpeed ?? 0, data.FixQuality ?? FixQualityType.GPS);
             if (data.Depth != null && data.TransducerDepth != null) nmea += generateDepthSentence_DPT(data.Depth ?? 0, data.TransducerDepth ?? 0);
             if (data.Depth != null) nmea += generateDepthSentence_DBT(data.Depth ?? 0);
             if (data.CourseOverGround != null && data.SpeedOverGround != null) nmea += generateSpeedAndCourseOverGroundSentence_VTG(data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0, data.MagneticCourseOverGround);
@@ -40,7 +40,6 @@ namespace NMEAServerLib
         {
             string _lat = ConvertDecimalDegreesToNMEAFormat(lat, Coord.Lat);
             string _lon = ConvertDecimalDegreesToNMEAFormat(lon, Coord.Lon);
-            string valid = Utils.isValidFix(fixQuality) ? "A" : "V"; // A is valid, V is "receiver warning"
             string time = UTCTime();
             string sentence = $"GPGGA,{time},{_lat},{_lon},{(int) fixQuality},{satellites},0,0,M,,,,";
             return FormatSentence(sentence);
@@ -61,15 +60,17 @@ namespace NMEAServerLib
             return FormatSentence(sentence);
         }
 
-        public static string generateTrueWindSpeedAndAngleSentence_MWV(int trueWindAngle, double trueWindSpeed)
+        public static string generateTrueWindSpeedAndAngleSentence_MWV(int trueWindAngle, double trueWindSpeed, FixQualityType fixQuality)
         {
-            string sentence = $"WIMWV,{trueWindAngle.ToString()},T,{trueWindSpeed.ToString("F1", CultureInfo.InvariantCulture)},N,A";
+            string valid = Utils.isValidFix(fixQuality) ? "A" : "V"; // A is valid, V is "receiver warning"
+            string sentence = $"WIMWV,{trueWindAngle.ToString()},T,{trueWindSpeed.ToString("F1", CultureInfo.InvariantCulture)},N,{valid}";
             return FormatSentence(sentence);            
         }
 
-        public static string generateApparentWindSpeedAndAngleSentence_MWV(int apparentWindAngle, double apparentWindSpeed)
+        public static string generateApparentWindSpeedAndAngleSentence_MWV(int apparentWindAngle, double apparentWindSpeed, FixQualityType fixQuality)
         {
-            string sentence = $"WIMWV,{apparentWindAngle.ToString()},R,{apparentWindSpeed.ToString("F1", CultureInfo.InvariantCulture)},N,A";
+            string valid = Utils.isValidFix(fixQuality) ? "A" : "V"; // A is valid, V is "receiver warning"
+            string sentence = $"WIMWV,{apparentWindAngle.ToString()},R,{apparentWindSpeed.ToString("F1", CultureInfo.InvariantCulture)},N,{valid}";
             return FormatSentence(sentence);
         }
 
