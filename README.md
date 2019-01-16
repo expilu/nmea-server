@@ -1,6 +1,8 @@
 # nmea-server
 A NMEA TCP server and sentences generator in C#
 
+**Important:** Note that this is a hobbyist implementation of a NMEA server that lacks many of the features or sentences of NMEA. This is done mainly to support this other project [SailawayToNMEA](https://github.com/expilu/sailaway-api-to-nmea)
+
 # How to use
 
 1. Download [NMEAServerLib.dll](https://github.com/expilu/nmea-server/releases/download/v1.0.0.0/NMEAServerLib.dll) and add it to your project references.
