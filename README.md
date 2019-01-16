@@ -1,7 +1,7 @@
 # nmea-server
 A NMEA TCP server and sentences generator in C#
 
-**Important:** Note that this is a hobbyist implementation of a NMEA server that lacks many of the features or sentences of NMEA. This is done mainly to support this other project [SailawayToNMEA](https://github.com/expilu/sailaway-api-to-nmea)
+**Important:** Note that this is a hobbyist implementation of a NMEA server that lacks many of the features or sentences of NMEA. It includes some basic sentences to track location, wind, speed, etc,.. This was done mainly to support this other project: [SailawayToNMEA](https://github.com/expilu/sailaway-api-to-nmea)
 
 # How to use
 
