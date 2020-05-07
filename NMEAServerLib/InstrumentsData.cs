@@ -22,6 +22,7 @@ namespace NMEAServerLib
         public Nullable<int> MagneticCourseOverGround { get; set; } // true cog will be used if no magnetic is set
         public Nullable<double> SpeedOverGround { get; set; } // knots
         public Nullable<int> SatellitesCount { get; set; } // when generating sentences it will be default to 4 if not set
+        public Nullable<bool> Virtual { get; set; } // marks if this data comes from a virtual origin. i.e. a virtual boat from a game
 
         public String generateNMEA()
         {
