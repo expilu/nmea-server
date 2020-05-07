@@ -13,6 +13,7 @@ namespace NMEAServerLib
         {
             string nmea = "";
 
+            if (data.Virtual != null && data.Virtual == true) nmea += generateVirtualOriginSentences();
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GLL(data.Lat ?? 0, data.Lon ?? 0, data.FixQuality ?? FixQualityType.GPS);
             if (data.Lat != null && data.Lon != null) nmea += generatePositionSentence_GGA(data.Lat ?? 0, data.Lon ?? 0, data.FixQuality ?? FixQualityType.GPS, data.SatellitesCount ?? 4);
             if (data.Heading != null && data.WaterSpeed != null) nmea += generateSpeedAndHeadingSentence_VHW(data.WaterSpeed ?? 0, data.Heading ?? 0, data.MagneticHeading);
@@ -22,7 +23,8 @@ namespace NMEAServerLib
             if (data.Depth != null && data.TransducerDepth != null) nmea += generateDepthSentence_DPT(data.Depth ?? 0, data.TransducerDepth ?? 0);
             if (data.Depth != null) nmea += generateDepthSentence_DBT(data.Depth ?? 0);
             if (data.CourseOverGround != null && data.SpeedOverGround != null) nmea += generateSpeedAndCourseOverGroundSentence_VTG(data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0, data.MagneticCourseOverGround);
-            if (data.Lat != null && data.Lon != null && data.SpeedOverGround != null && data.CourseOverGround != null) nmea += generateRecommendedMinimumInformationSentence_RMC(data.Lat ?? 0, data.Lon ?? 0, data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0, data.FixQuality ?? FixQualityType.GPS);            
+            if (data.Lat != null && data.Lon != null && data.SpeedOverGround != null && data.CourseOverGround != null) nmea += generateRecommendedMinimumInformationSentence_RMC(data.Lat ?? 0, data.Lon ?? 0, data.SpeedOverGround ?? 0, data.CourseOverGround ?? 0, data.FixQuality ?? FixQualityType.GPS);
+            
             return nmea;
         }
 
@@ -104,6 +106,12 @@ namespace NMEAServerLib
             string time = UTCTime();
             string date = dateDDMMYY();
             string sentence = $"GPRMC,{time},{valid},{_lat},{_lon},{_sogKnots},{courseOverGroud},{date},,,";
+            return FormatSentence(sentence);
+        }
+
+        public static string generateVirtualOriginSentences()
+        {
+            string sentence = $"SOL";
             return FormatSentence(sentence);
         }
 
