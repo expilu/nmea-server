@@ -111,7 +111,7 @@ namespace NMEAServerLib
 
         public static string generateVirtualOriginSentences()
         {
-            string sentence = $"$SOL";
+            string sentence = $"$SOL\n";
             return sentence;
         }
 
