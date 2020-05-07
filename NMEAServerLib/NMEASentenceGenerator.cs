@@ -111,8 +111,8 @@ namespace NMEAServerLib
 
         public static string generateVirtualOriginSentences()
         {
-            string sentence = $"SOL";
-            return FormatSentence(sentence);
+            string sentence = $"$SOL";
+            return sentence;
         }
 
         private static string CalculateCheckSum(String sentence)
