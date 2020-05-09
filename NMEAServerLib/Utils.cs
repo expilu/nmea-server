@@ -15,7 +15,6 @@ namespace NMEAServerLib
             {
                 case FixQualityType.REAL_TIME_KINEMATIC:
                 case FixQualityType.FLOAT_RTK:
-                case FixQualityType.ESTIMATED_DEAD_RECKONING:
                     return false;
                 default: return true;
             }
