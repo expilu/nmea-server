@@ -133,14 +133,17 @@ namespace NMEAServerLib
         private static string ConvertDecimalDegreesToNMEAFormat(double decimalDegrees, Coord coord)
         {
             String cardinal = "";
-
+            String digitFormat = "";
+            
             switch (coord)
             {
                 case Coord.Lat:
                     cardinal = decimalDegrees >= 0 ? "N" : "S";
+                    digitFormat = "00";
                     break;
                 case Coord.Lon:
                     cardinal = decimalDegrees >= 0 ? "E" : "W";
+                    digitFormat = "000";
                     break;
             }
 
@@ -151,7 +154,7 @@ namespace NMEAServerLib
             sec -= deg * 3600;
             double min = sec / 60;
 
-            return deg.ToString("00") + min.ToString("00.0###", CultureInfo.InvariantCulture) + "," + cardinal;
+            return deg.ToString(digitFormat) + min.ToString("00.0###", CultureInfo.InvariantCulture) + "," + cardinal;
         }
 
         private static string UTCTime()
